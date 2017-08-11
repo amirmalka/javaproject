@@ -87,7 +87,7 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 			 currentSize++;
 		 }
 		 
-		 return value; //Return the current value
+		 return null; //There is no node which need to be replaced
 	}
 	
 	public void removeElement(K key)
