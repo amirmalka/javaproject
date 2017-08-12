@@ -9,8 +9,7 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 		private Node<K,V> mostRecentlyUsed;
 
 	
-	LRUAlgoCacheImpl(int capacity)
-	{
+	LRUAlgoCacheImpl(int capacity){
 		super(capacity);
 		this.currentSize = 0;
 		cache = new HashMap<K, Node<K,V> >(capacity);
@@ -18,8 +17,8 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 		mostRecentlyUsed = leastRecentlyUsed;
 	}
 	
-	public V getElement(K key)
-	{
+	public V getElement(K key){
+		
 		//Check if the key exists in the HashMap
 		if(!cache.containsKey(key))
 			return null;
@@ -58,8 +57,8 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 	     return tempNode.value;
 	}
 	
-	public  V putElement(K key, V value)
-	{
+	public  V putElement(K key, V value){
+		
 		//If the key already exists in the cache, no element needs to be replaced 
 		 if (cache.containsKey(key)){
 	            return null; 
@@ -71,7 +70,7 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 		 cache.put(key, newNode);
 		 mostRecentlyUsed = newNode;
 		 
-		 //Check if the previous capacity size has been reached
+		//Check if the capacity size has been reached - Page Fault Occurs 
 		 if(currentSize == capacity) {
 			 Node<K,V> saveNode = cache.remove(leastRecentlyUsed.key);
 			 leastRecentlyUsed = leastRecentlyUsed.next;
@@ -87,28 +86,33 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 			 currentSize++;
 		 }
 		 
-		 return null; //There is no node which need to be replaced
+		 return null; //There is no node which needs to be replaced
 	}
 	
-	public void removeElement(K key)
-	{
+	public void removeElement(K key){
 		if (cache.containsKey(key)) {
+			
 			Node<K,V> tempNode = cache.get(key);
+			
 			if (tempNode == mostRecentlyUsed) {
 				tempNode.previous.next = null;
 				mostRecentlyUsed  = tempNode.previous;
 				cache.remove(key);
 			}
+			
 			else if(tempNode == leastRecentlyUsed) {
 				tempNode.next.previous = null;
 				leastRecentlyUsed = tempNode.next;
 				cache.remove(key);
 			}
+			
 			else {
 				tempNode.previous.next = tempNode.next;
 				tempNode.next.previous = tempNode.previous;
 				cache.remove(key);
 			}
+			currentSize--;
 		}
+		
 	}
 }
