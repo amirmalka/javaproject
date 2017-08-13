@@ -2,8 +2,6 @@ package com.hit.algorithm;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
-import sun.awt.SunHints.Value;;
-
 
 public class NFUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 
@@ -105,7 +103,6 @@ public class NFUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 	    }
 	}
 	
-	@Override
 	public V putElement(K key, V value) {
 		V valueToReturn = null;
 		if (capacity == 0) 
@@ -125,7 +122,6 @@ public class NFUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 	    return valueToReturn;
 	}
 
-	@Override
 	public void removeElement(K key) {
 		if (!valueHash.containsKey(key))
 			return;
