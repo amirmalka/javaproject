@@ -131,4 +131,12 @@ public class NFUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 		if (node.keys.size() == 0) 
 	    	removeNode(head);
 	}
+	
+	public int getCacheSize(){
+		return capacity;
+	}
+	
+	public int getCacheCurrentSize(){
+		return valueHash.size();
+	}
 }

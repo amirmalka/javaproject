@@ -91,5 +91,47 @@ public class IAlgoCacheTest{
 		 
 		 assertEquals(0, testCache.getCacheCurrentSize());
 	}
-
+	
+	@Test 
+	public void testNFU() {
+		int cacheSize = 4;
+		NFUAlgoCacheImpl<Integer, Integer> testCache = new NFUAlgoCacheImpl<Integer,Integer>(cacheSize);
+		assertNull(testCache.putElement(1, 100));
+		assertNull(testCache.putElement(2, 200));
+		assertNull(testCache.putElement(3, 300));
+		assertNull(testCache.putElement(4, 400));
+		assertEquals(Integer.valueOf(100), testCache.getElement(1));
+		assertEquals(Integer.valueOf(200), testCache.getElement(2));
+		assertEquals(Integer.valueOf(200), testCache.getElement(2));
+		assertEquals(Integer.valueOf(300),testCache.putElement(5, 500));
+		assertEquals(Integer.valueOf(500), testCache.getElement(5));
+		assertEquals(Integer.valueOf(500), testCache.getElement(5));
+		assertEquals(Integer.valueOf(500), testCache.getElement(5));
+		assertEquals(Integer.valueOf(500), testCache.getElement(5));
+		assertEquals(Integer.valueOf(500), testCache.getElement(5));
+		assertEquals(Integer.valueOf(500), testCache.getElement(5));
+		assertEquals(Integer.valueOf(400),testCache.putElement(6, 600));
+		assertEquals(Integer.valueOf(600), testCache.getElement(6));
+		assertEquals(Integer.valueOf(100),testCache.putElement(7, 700));
+		assertEquals(Integer.valueOf(700),testCache.putElement(8, 800));
+		assertEquals(4, testCache.getCacheCurrentSize());
+		testCache.removeElement(2);
+		assertEquals(3, testCache.getCacheCurrentSize());
+		testCache.removeElement(6);
+		assertEquals(2, testCache.getCacheCurrentSize());
+		testCache.removeElement(5);
+		assertEquals(1, testCache.getCacheCurrentSize());
+		testCache.removeElement(8);
+		assertEquals(0, testCache.getCacheCurrentSize());
+		assertNull(testCache.putElement(7, 700));
+		assertEquals(1, testCache.getCacheCurrentSize());
+		assertNull(testCache.putElement(7, 700));
+		assertEquals(1, testCache.getCacheCurrentSize());
+		testCache.removeElement(7);
+		assertNull(testCache.getElement(7));
+		assertEquals(0, testCache.getCacheCurrentSize());
+		testCache.removeElement(7);
+		assertEquals(0, testCache.getCacheCurrentSize());
+		assertNull(testCache.putElement(7, 700));
+	}
 }
