@@ -49,11 +49,19 @@ public class Random<K,V> extends AbstractAlgoCache<K,V> {
 	}
 
 	public void removeElement(K key) {
+		if (!cache.containsKey(key)) 
+			return;
+		cache.remove(key);
+		currentSize--;
 		
-		if (cache.containsKey(key)) {
-			cache.remove(key);
-			currentSize--;
-		}
+	}
+	
+	public int getCacheSize() {
+		return capacity;
+	}
+	
+	public int getCacheCurrentSize() {
+		return currentSize;
 	}
 	
 }

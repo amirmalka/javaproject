@@ -90,29 +90,40 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 	}
 	
 	public void removeElement(K key){
-		if (cache.containsKey(key)) {
-			
-			Node<K,V> tempNode = cache.get(key);
-			
-			if (tempNode == mostRecentlyUsed) {
-				tempNode.previous.next = null;
-				mostRecentlyUsed  = tempNode.previous;
-				cache.remove(key);
-			}
-			
-			else if(tempNode == leastRecentlyUsed) {
-				tempNode.next.previous = null;
-				leastRecentlyUsed = tempNode.next;
-				cache.remove(key);
-			}
-			
-			else {
-				tempNode.previous.next = tempNode.next;
-				tempNode.next.previous = tempNode.previous;
-				cache.remove(key);
-			}
-			currentSize--;
+		if (!cache.containsKey(key)) 
+			return;
+		Node<K,V> tempNode = cache.get(key);
+		
+		if(currentSize == 1) {
+			cache.remove(key);
+			mostRecentlyUsed = leastRecentlyUsed = null;
+		}
+		else if (tempNode == mostRecentlyUsed) {
+			tempNode.previous.next = null;
+			mostRecentlyUsed  = tempNode.previous;
+			cache.remove(key);
 		}
 		
+		else if(tempNode == leastRecentlyUsed) {
+			tempNode.next.previous = null;
+			leastRecentlyUsed = tempNode.next;
+			cache.remove(key);
+		}
+		
+		else {
+			tempNode.previous.next = tempNode.next;
+			tempNode.next.previous = tempNode.previous;
+			cache.remove(key);
+		}
+		currentSize--;
+	}
+	
+	public int getCacheSize(){
+		return capacity;
+	}
+	
+	public int getCacheCurrentSize(){
+		return currentSize;
 	}
 }
+
