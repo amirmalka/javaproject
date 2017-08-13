@@ -60,7 +60,7 @@ public class IAlgoCacheTest{
 		int cacheSize = 4;
 		Random<Integer,Integer> testCache = new Random<Integer,Integer>(cacheSize);
 		for(int i=1;i<cacheSize+1;i++) {
-			testCache.putElement(i, i+cacheSize);
+			testCache.putElement(i, i*100);
 		}
 		
 		//Check LRU Total Capacity:
@@ -76,13 +76,13 @@ public class IAlgoCacheTest{
 		 assertEquals(3, testCache.getCacheCurrentSize());
 		 
 		//Put element #5 in the cache
-		 testCache.putElement(5, 5+cacheSize);
+		 testCache.putElement(5, 5*100);
 		 
 		//Check LRU Current Capacity:
 		 assertEquals(4, testCache.getCacheCurrentSize());
 		 
 		//Put an additional element in the cache- causes a page fault:
-		 testCache.putElement(6, 6+cacheSize);
+		 System.out.println(testCache.putElement(6, 6*100));
 		 assertEquals(4, testCache.getCacheCurrentSize());
 		 
 		 //Remove all elements from the cache
