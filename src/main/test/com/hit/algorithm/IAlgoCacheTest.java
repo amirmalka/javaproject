@@ -96,42 +96,64 @@ public class IAlgoCacheTest{
 	public void testNFU() {
 		int cacheSize = 4;
 		NFUAlgoCacheImpl<Integer, Integer> testCache = new NFUAlgoCacheImpl<Integer,Integer>(cacheSize);
+		// Insert 4 keys - cache is not full
 		assertNull(testCache.putElement(1, 100));
 		assertNull(testCache.putElement(2, 200));
 		assertNull(testCache.putElement(3, 300));
 		assertNull(testCache.putElement(4, 400));
+		
+		// Cache is full at this point
+		
+		// Access key 1
 		assertEquals(Integer.valueOf(100), testCache.getElement(1));
+		
+		// Access key 2 twice
 		assertEquals(Integer.valueOf(200), testCache.getElement(2));
 		assertEquals(Integer.valueOf(200), testCache.getElement(2));
+		
+		// add key 5 to a full cache
+		// key 3 is the least frequency used so 300 value should be returned
 		assertEquals(Integer.valueOf(300),testCache.putElement(5, 500));
-		assertEquals(Integer.valueOf(500), testCache.getElement(5));
-		assertEquals(Integer.valueOf(500), testCache.getElement(5));
-		assertEquals(Integer.valueOf(500), testCache.getElement(5));
-		assertEquals(Integer.valueOf(500), testCache.getElement(5));
-		assertEquals(Integer.valueOf(500), testCache.getElement(5));
-		assertEquals(Integer.valueOf(500), testCache.getElement(5));
+		
+		// Access key 5 (6 times)
+		for (int i= 0; i < 6; i++)
+			assertEquals(Integer.valueOf(500), testCache.getElement(5));
+		
+		// Add 3 new keys to cache
 		assertEquals(Integer.valueOf(400),testCache.putElement(6, 600));
 		assertEquals(Integer.valueOf(600), testCache.getElement(6));
 		assertEquals(Integer.valueOf(100),testCache.putElement(7, 700));
 		assertEquals(Integer.valueOf(700),testCache.putElement(8, 800));
+		
+		// Cache contains keys: 2,6,5,8
+		// Check removeElement to empty cache		
 		assertEquals(4, testCache.getCacheCurrentSize());
 		testCache.removeElement(2);
+		assertNull(testCache.getElement(2));
 		assertEquals(3, testCache.getCacheCurrentSize());
 		testCache.removeElement(6);
+		assertNull(testCache.getElement(6));
 		assertEquals(2, testCache.getCacheCurrentSize());
 		testCache.removeElement(5);
+		assertNull(testCache.getElement(5));
 		assertEquals(1, testCache.getCacheCurrentSize());
 		testCache.removeElement(8);
+		assertNull(testCache.getElement(8));
 		assertEquals(0, testCache.getCacheCurrentSize());
+		
+		// Put the same element twice, with different values - new value should be saved in cache
 		assertNull(testCache.putElement(7, 700));
 		assertEquals(1, testCache.getCacheCurrentSize());
-		assertNull(testCache.putElement(7, 700));
+		assertEquals(Integer.valueOf(700),testCache.getElement(7));
+		assertNull(testCache.putElement(7, 7000));
 		assertEquals(1, testCache.getCacheCurrentSize());
+		assertEquals(Integer.valueOf(7000),testCache.getElement(7));
+		
+		// Remove the same element twice - cache shouldn't be affected
 		testCache.removeElement(7);
 		assertNull(testCache.getElement(7));
 		assertEquals(0, testCache.getCacheCurrentSize());
 		testCache.removeElement(7);
-		assertEquals(0, testCache.getCacheCurrentSize());
-		assertNull(testCache.putElement(7, 700));
+		assertEquals(0, testCache.getCacheCurrentSize());		
 	}
 }
