@@ -34,12 +34,14 @@ public class Page<T> implements Serializable{
 	}
 	
 	public int hashCode() {
+		//Return a unique value which identifies the object
 		return Long.hashCode(this.pageID);
 	}
 	
 	public boolean equals(Object obj) {
 		if(!(obj instanceof Page<?>))
 			return false;
+		//obj doesn't have Page attributes, as a resule we need to use casting:
 		return (this.pageID == ((Page<?>)obj).pageID? true:false);
 	}
 	
