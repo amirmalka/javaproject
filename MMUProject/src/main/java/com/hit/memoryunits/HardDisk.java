@@ -1,6 +1,6 @@
 package com.hit.memoryunits;
 
-public class HardDisk extends Object{
+public class HardDisk {
 	
 	
 }
