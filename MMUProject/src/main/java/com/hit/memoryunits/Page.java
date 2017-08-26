@@ -1,5 +1,7 @@
 package com.hit.memoryunits;
 
-public class Page<T> extends java.lang.Object implements java.io.Serializable{
+import java.io.Serializable;
+
+public class Page<T> extends Object implements Serializable{
 	
 }

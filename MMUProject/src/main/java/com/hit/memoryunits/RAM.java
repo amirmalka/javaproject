@@ -1,7 +1,7 @@
 package com.hit.memoryunits;
 
 
-public class RAM extends java.lang.Object{
+public class RAM extends Object{
 	
 	
 }
