@@ -44,6 +44,6 @@ public class Page<T> implements Serializable{
 	}
 	
 	public String toString(){
-		return "Content is: " + content;
+		return "Content is: " + content.toString();
 	}
 }
