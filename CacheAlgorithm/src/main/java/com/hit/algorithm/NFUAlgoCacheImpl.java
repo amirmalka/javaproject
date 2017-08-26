@@ -1,6 +1,5 @@
 package com.hit.algorithm;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 
 
 public class NFUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
