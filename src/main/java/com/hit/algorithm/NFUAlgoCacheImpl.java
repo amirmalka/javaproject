@@ -5,14 +5,14 @@ import java.util.LinkedHashSet;
 
 public class NFUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 
-	private Node<K> head = null;
+	private NodeNFU<K> head = null;
 	private HashMap<K, V> valueHash = null;
-	private HashMap<K, Node<K>> nodeHash = null;
+	private HashMap<K, NodeNFU<K>> nodeHash = null;
 	
 	public NFUAlgoCacheImpl(int capacity) {
 		super(capacity);
 	    valueHash = new HashMap<K, V>();
-	    nodeHash = new HashMap<K, Node<K>>();
+	    nodeHash = new HashMap<K, NodeNFU<K>>();
 	}
 	
 	public V getElement(K key) {
@@ -25,10 +25,10 @@ public class NFUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 
 	private void addToHead(K key) {
 	    if (head == null) {
-	        head = new Node<K>(0);
+	        head = new NodeNFU<K>(0);
 	        head.keys.add(key);
 	    } else if (head.count > 0) {
-	        Node<K> node = new Node<K>(0);
+	    	NodeNFU<K> node = new NodeNFU<K>(0);
 	        node.keys.add(key);
 	        node.next = head;
 	        head.prev = node;
@@ -40,17 +40,17 @@ public class NFUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 	}
 	
 	private void increaseCount(K key) {
-	    Node<K> node = nodeHash.get(key);
+		NodeNFU<K> node = nodeHash.get(key);
 	    node.keys.remove(key);
 	    
 	    if (node.next == null) {
-	        node.next = new Node<K>(node.count+1);
+	        node.next = new NodeNFU<K>(node.count+1);
 	        node.next.prev = node;
 	        node.next.keys.add(key);
 	    } else if (node.next.count == node.count+1) {
 	        node.next.keys.add(key);
 	    } else {
-	        Node<K> tmp = new Node<K>(node.count+1);
+	    	NodeNFU<K> tmp = new NodeNFU<K>(node.count+1);
 	        tmp.keys.add(key);
 	        tmp.prev = node;
 	        tmp.next = node.next;
@@ -80,7 +80,7 @@ public class NFUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 	    return oldValue;
 	}
 	
-	private void removeNode(Node<K> node) {
+	private void removeNode(NodeNFU<K> node) {
 	    if (node.prev == null) {
 	        head = node.next;
 	    } else {
@@ -88,18 +88,6 @@ public class NFUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 	    } 
 	    if (node.next != null) {
 	        node.next.prev = node.prev;
-	    }
-	}
-	
-	class Node<T> {
-	    public int count = 0;
-	    public LinkedHashSet<T> keys = null;
-	    public Node<K> prev = null, next = null;
-	    
-	    public Node(int count) {
-	        this.count = count;
-	        keys = new LinkedHashSet<T>();
-	        prev = next = null;
 	    }
 	}
 	
@@ -126,7 +114,7 @@ public class NFUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 		if (!valueHash.containsKey(key))
 			return;
 		valueHash.remove(key);
-		Node<K> node = nodeHash.get(key);
+		NodeNFU<K> node = nodeHash.get(key);
 		node.keys.remove(key);
 		if (node.keys.size() == 0) 
 	    	removeNode(head);

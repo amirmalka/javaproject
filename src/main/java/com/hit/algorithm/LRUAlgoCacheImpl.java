@@ -4,16 +4,16 @@ import java.util.HashMap;
 public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 	
 		private int currentSize;
-		private HashMap<K, Node<K,V> > cache;
-		private Node<K,V> leastRecentlyUsed;
-		private Node<K,V> mostRecentlyUsed;
+		private HashMap<K, NodeLRU<K,V> > cache;
+		private NodeLRU<K,V> leastRecentlyUsed;
+		private NodeLRU<K,V> mostRecentlyUsed;
 
 	
 	LRUAlgoCacheImpl(int capacity){
 		super(capacity);
 		this.currentSize = 0;
-		cache = new HashMap<K, Node<K,V> >(capacity);
-		leastRecentlyUsed = new Node<K,V>(null, null, null, null);
+		cache = new HashMap<K, NodeLRU<K,V> >(capacity);
+		leastRecentlyUsed = new NodeLRU<K,V>(null, null, null, null);
 		mostRecentlyUsed = leastRecentlyUsed;
 	}
 	
@@ -23,7 +23,7 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 		if(!cache.containsKey(key))
 			return null;
 		
-		Node<K, V> tempNode = cache.get(key);
+		NodeLRU<K, V> tempNode = cache.get(key);
 		
 		 //If given key is the MRU in the Doubly Linked List
 		 if (tempNode.key == mostRecentlyUsed.key)
@@ -32,8 +32,8 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 		 //The key is in the left side of the MRU
 		 
 		 //Receive the next and previous nodes
-		 Node<K,V> nextNode = tempNode.next;
-		 Node<K,V>prevNode = tempNode.previous;
+		 NodeLRU<K,V> nextNode = tempNode.next;
+		 NodeLRU<K,V>prevNode = tempNode.previous;
 		 
 		 //If given key is the LRU in the Doubly Linked List
 		 if (tempNode.key == leastRecentlyUsed.key){
@@ -65,14 +65,14 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 	     }
 		 
 		 //Else, lets put the new element as the MRU
-		 Node<K,V> newNode = new Node<K,V>(mostRecentlyUsed, null, key, value);
+		 NodeLRU<K,V> newNode = new NodeLRU<K,V>(mostRecentlyUsed, null, key, value);
 		 mostRecentlyUsed.next = newNode;
 		 cache.put(key, newNode);
 		 mostRecentlyUsed = newNode;
 		 
 		//Check if the capacity size has been reached - Page Fault Occurs 
 		 if(currentSize == capacity) {
-			 Node<K,V> saveNode = cache.remove(leastRecentlyUsed.key);
+			 NodeLRU<K,V> saveNode = cache.remove(leastRecentlyUsed.key);
 			 leastRecentlyUsed = leastRecentlyUsed.next;
 			 leastRecentlyUsed.previous = null;
 			 return saveNode.value;
@@ -92,7 +92,7 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 	public void removeElement(K key){
 		if (!cache.containsKey(key)) 
 			return;
-		Node<K,V> tempNode = cache.get(key);
+		NodeLRU<K,V> tempNode = cache.get(key);
 		
 		if(currentSize == 1) {
 			cache.remove(key);
