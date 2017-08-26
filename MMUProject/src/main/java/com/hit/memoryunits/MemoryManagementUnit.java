@@ -7,7 +7,7 @@ public class MemoryManagementUnit {
 	 
 	MemoryManagementUnit(int ramCapacity, IAlgoCache<Long,Long> algo) {
 		this.myRAM = new RAM(ramCapacity);
-		this.myAlgoCache = algo ;
+		this.myAlgoCache = algo;
 	}
 	
 	public Page<byte[]>[] getPages(Long[] pageIds) throws java.io.IOException{
