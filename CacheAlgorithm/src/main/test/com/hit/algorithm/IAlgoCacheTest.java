@@ -43,8 +43,17 @@ public class IAlgoCacheTest{
 		 assertEquals(Integer.valueOf(600),testCache.putElement(7, 7*100));
 		 assertNull(testCache.getElement(6));
 		 
+		// Put the same element twice, with different values - new value should be saved in cache
+		assertEquals(Integer.valueOf(500), testCache.putElement(8, 800));
+		assertEquals(4, testCache.getCacheCurrentSize());
+		assertEquals(Integer.valueOf(800),testCache.getElement(8));
+		assertNull(testCache.putElement(8, 8000));
+		assertEquals(4, testCache.getCacheCurrentSize());
+		assertEquals(Integer.valueOf(8000),testCache.getElement(8));
+			
+			
 		 //Remove all element from the cache
-		 testCache.removeElement(5);
+		 testCache.removeElement(8);
 		 assertEquals(3, testCache.getCacheCurrentSize());
 		 testCache.removeElement(3);
 		 assertEquals(2, testCache.getCacheCurrentSize());

@@ -71,16 +71,16 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 		}
 		NodeLRU<K,V> newNode = new NodeLRU<K,V>(mostRecentlyUsed, null, key, value);
 		mostRecentlyUsed.next = newNode;
-		cache.put(key, newNode);
 		mostRecentlyUsed = newNode;
+		cache.put(key, newNode);
 		//Check if the capacity size has been reached - Page Fault Occurs 
-		if(cache.size() == capacity) {
+		if(cache.size() > capacity) {
 			 NodeLRU<K,V> saveNode = cache.remove(leastRecentlyUsed.key);
 			 leastRecentlyUsed = leastRecentlyUsed.next;
 			 leastRecentlyUsed.previous = null;
 			 return saveNode.value;
 		 }
-		 return null; //There is no node which needs to be replaced
+		return null; //There is no node which needs to be replaced
 	}
 	
 	public void removeElement(K key){

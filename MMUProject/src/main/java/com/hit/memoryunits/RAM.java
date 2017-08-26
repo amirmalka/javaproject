@@ -17,7 +17,9 @@ public class RAM
 	}
 	
 	public void setPages(Map<Long,Page<byte[]>> pages) {
-		
+		for (Map.Entry<Long, Page<byte[]>> page: pages.entrySet()) {
+			memory.
+		}
 	}
 	
 	public Page<byte[]> getPage(Long pageId){
@@ -56,11 +58,11 @@ public class RAM
 	
 	public int getInitialCapacity() {
 		return this.capacity;
-		// TODO: implement
 	}
 	
 	public void setInitialCapacity(int initialCapacity) {
-		// TODO: Implement
+		if (initialCapacity > this.capacity)
+			this.capacity = initialCapacity;
 	}
 	
 }
