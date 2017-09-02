@@ -9,7 +9,7 @@ public class LRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K,V> {
 		private NodeLRU<K,V> mostRecentlyUsed;
 
 	
-	LRUAlgoCacheImpl(int capacity){
+	public LRUAlgoCacheImpl(int capacity) {
 		super(capacity);
 		
 		cache = new HashMap<K, NodeLRU<K,V> >(capacity);

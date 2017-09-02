@@ -13,7 +13,7 @@ public class Random<K,V> extends AbstractAlgoCache<K,V> {
 	
 	ArrayList<K> keys;
 	
-	Random (int capacity){
+	public Random(int capacity){
 		super(capacity);
 		cache = new HashMap<K,V>(capacity);
 		rand = new java.util.Random();

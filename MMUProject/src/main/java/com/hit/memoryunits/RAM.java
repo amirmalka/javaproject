@@ -43,7 +43,8 @@ public class RAM
 	
 	public Page<byte[]>[] getPages(Long[] pageIds){
 		@SuppressWarnings("unchecked")
-		Page<byte[]>[] arr = (Page<byte[]>[]) new Page<?>[pageIds.length];
+		
+		Page<byte[]>[] arr = (Page<byte[]>[]) new Page<?>[pageIds.length];  // Replace with new Object[pageIds.length]?
 		for (int i = 0; i < pageIds.length; i++)
 			arr[i] = this.getPage(pageIds[i]);
 		return arr;
@@ -68,4 +69,9 @@ public class RAM
 			this.capacity = initialCapacity;
 	}
 	
+	public boolean isFull(){
+		if(capacity == memory.size())
+			return true;
+		return false;
+	}
 }
