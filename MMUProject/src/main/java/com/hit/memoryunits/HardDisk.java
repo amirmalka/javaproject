@@ -4,9 +4,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class HardDisk {
+	private final int _SIZE;
+	public final int DEFAULT_FILE_NAME;
 	
 	private HardDisk() {
-		
+		_SIZE = 1;
 	}
 	
 	public static HardDisk getInstance()

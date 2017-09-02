@@ -13,13 +13,15 @@ public class RAM
 	}
 	
 	public Map<Long,Page<byte[]>> getPages(){
-		return new HashMap<Long, Page<byte[]>>(memory);
+		return memory;
 	}
 	
 	public void setPages(Map<Long,Page<byte[]>> pages) {
-		for (Map.Entry<Long, Page<byte[]>> page: pages.entrySet()) {
-			memory.
-		}
+		for (Long pageId: pages.keySet())
+			if (memory.containsKey(pageId))
+				memory.put(pageId, pages.get(pageId));
+			else
+				this.addPage(pages.get(pageId));
 	}
 	
 	public Page<byte[]> getPage(Long pageId){
@@ -29,7 +31,8 @@ public class RAM
 	}
 	
 	public void addPage(Page<byte[]> addPage) {
-		memory.put(addPage.getPageId(), addPage);
+		if (memory.size() < capacity)
+			memory.put(addPage.getPageId(), addPage);
 	}
 	
 	public void removePage(Page<byte[]> removePage) {
