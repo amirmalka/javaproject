@@ -1,6 +1,4 @@
 package com.hit.memoryunits;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,8 +8,8 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 public class HardDisk {
-	private final int _SIZE = 100;
-	public final String DEFAULT_FILE_NAME = "./HardDisk/HD.txt";
+	private final int _SIZE = 1000;
+	public final String DEFAULT_FILE_NAME = "HD.txt";
 	private static HardDisk instance = null;
 	
 	@SuppressWarnings("unchecked")
@@ -19,12 +17,12 @@ public class HardDisk {
 		HashMap<Long, Page<byte[]>> hd;
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(DEFAULT_FILE_NAME));
-			hd = new HashMap<Long, Page<byte[]>>(_SIZE);
 			hd = (HashMap<Long,Page<byte[]>>)in.readObject();
 			in.close();
 		}
 		catch (IOException | ClassNotFoundException ex1) {
 			// File was corrupted or file was not exist - Initialize HD data and save to file
+			
 			hd = generateEmptyHdMap(_SIZE);
 			try {
 				ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DEFAULT_FILE_NAME));

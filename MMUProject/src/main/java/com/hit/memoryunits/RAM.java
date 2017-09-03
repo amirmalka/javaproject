@@ -25,25 +25,20 @@ public class RAM
 	}
 	
 	public Page<byte[]> getPage(Long pageId){
-		if (!memory.containsKey(pageId))
-			return null;
-		return memory.get(pageId);	
+		return memory.getOrDefault(pageId, null);	
 	}
 	
 	public void addPage(Page<byte[]> addPage) {
-		if (memory.size() < capacity)
-			memory.put(addPage.getPageId(), addPage);
+		memory.put(addPage.getPageId(), addPage);
 	}
 	
 	public void removePage(Page<byte[]> removePage) {
-		if (!memory.containsKey(removePage.getPageId()))
-			return;
-		memory.remove(removePage.getPageId());
+		if (memory.containsKey(removePage.getPageId()))
+			memory.remove(removePage.getPageId());
 	}
 	
 	public Page<byte[]>[] getPages(Long[] pageIds){
 		@SuppressWarnings("unchecked")
-		
 		Page<byte[]>[] arr = (Page<byte[]>[]) new Page<?>[pageIds.length];  // Replace with new Object[pageIds.length]?
 		for (int i = 0; i < pageIds.length; i++)
 			arr[i] = this.getPage(pageIds[i]);
@@ -65,13 +60,10 @@ public class RAM
 	}
 	
 	public void setInitialCapacity(int initialCapacity) {
-		if (initialCapacity > this.capacity)
-			this.capacity = initialCapacity;
+		this.capacity = initialCapacity;
 	}
 	
-	public boolean isFull(){
-		if(capacity == memory.size())
-			return true;
-		return false;
+	public boolean isFull() {
+		return capacity == memory.size();
 	}
 }
