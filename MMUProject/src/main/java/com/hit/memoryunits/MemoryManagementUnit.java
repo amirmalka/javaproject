@@ -36,7 +36,7 @@ public class MemoryManagementUnit {
 					ram.addPage(pageRetrievedFromHd);
 				}
 			}
-			requestedPages[i] = ram.getPage(pageId);			
+			requestedPages[i] = ram.getPage(pageIds[i]);			
 		}
 		return requestedPages;
 	}
