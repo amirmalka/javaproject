@@ -1,5 +1,7 @@
 package com.hit.processes;
 
+
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import com.hit.memoryunits.MemoryManagementUnit;
@@ -28,9 +30,24 @@ public class Process implements Callable<Boolean> {
 	
 	@Override
 	public Boolean call() throws Exception {
-		Page<byte[]>[] pageFromMmu;
+		Page<byte[]>[] pagesFromMmu;
 		
-		return true;
+		//Iterate each element in the ProcessCycle list
+		try {
+			for(ProcessCycle processCycle : processCycles.getProcessCycles()) { 
+				pagesFromMmu = mmu.getPages(processCycle.getPages().toArray(new Long[processCycle.getPages().size()]));
+				List<Long>processCyclePages = processCycle.getPages();
+				for(int i=0;i<processCyclePages.size();i++) {
+					pagesFromMmu[i].setContent(processCycle.getData().get(i));
+				}
+				Thread.sleep(processCycle.getSleepMs());
+			}
+			return true;
+		}
+		catch (InterruptedException e){
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }
