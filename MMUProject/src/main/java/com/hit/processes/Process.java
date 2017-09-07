@@ -5,6 +5,10 @@ import java.util.concurrent.Callable;
 import com.hit.memoryunits.MemoryManagementUnit;
 
 public class Process implements Callable<Boolean> {
+	private MemoryManagementUnit mmu;
+	private int ProcessId;
+	private ProcessCycles processCycles;
+	
 	public Process(int id, MemoryManagementUnit mmu, ProcessCycles processCycles) {
 		// TODO Implement
 	}
