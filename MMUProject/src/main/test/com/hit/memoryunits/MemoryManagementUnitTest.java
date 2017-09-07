@@ -47,7 +47,13 @@ public class MemoryManagementUnitTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		//System.out.println(Arrays.toString(new byte[]{2,3,77}));
+		HardDisk hd = HardDisk.getInstance();
+		Long p_id1 = new Long(45);
+		Long p_id2 = new Long(46);
+		Page<byte[]> p1 = new Page<byte[]>(p_id1, new byte[] {1,2,3,4});
+		Page<byte[]> gotPage = hd.pageReplacement(p1, p_id2);
 	}
 	
 }
