@@ -11,33 +11,78 @@ public class CLI implements Runnable {
 	public static final String LRU = "LRU";
 	public static final String NFU = "NFU";
 	public static final String RANDOM = "RANDOM";
+	private static final String WELCOME_MSG = "Welcome to the MMU CLI";
 	private static final String START_MSG = "Please enter required algorithm and RAM capcity";
+	private static final String NOT_STARTED_MSG = "Maybe try to start first?";
 	private static final String EXIT_MSG = "Thank you";
 	private static final String INVALID_MSG = "Not a valid command";
-	
+	private PrintStream printStream;
+    private Scanner scanner;
 
 	public CLI(InputStream in, OutputStream out) {
-		// TODO Implement
-		System.out.println(START_MSG);
-		Scanner scan = new Scanner(in);
-		if (scan.hasNext()) {
-			String first = scan.next();
-			if (first.equals(START)) {
-				
+		this.printStream = new PrintStream(out);
+		this.scanner = new Scanner(in);
+	}
+	
+	private boolean isNumeric(String str) {
+		return str != null && str.chars().allMatch(Character::isDigit);
+	}
+	
+	private int getPositiveInteger(String str) {
+		if (str != null && isNumeric(str)) {
+			try {
+				return Integer.parseInt(str);
 			}
-			else if (first.equals(STOP))
-			{
-				
+			catch (NumberFormatException e) {
+				return 0;
 			}
 		}
-		scan.close();
+		return 0;
 	}
 	
 	public void run() {
-		// TODO Implement
+		boolean isStarted = false;
+		printStream.println(WELCOME_MSG);
+		while (true) {
+			String[] inputLine = this.scanner.nextLine().split("\\s+");
+			
+			if (inputLine.length == 0)
+				inputLine = new String[] {""};
+			
+			switch (inputLine[0]) {
+				case START:
+					if (inputLine.length == 1) {
+						isStarted = true;
+						printStream.println(START_MSG);
+						break;
+					}
+				case STOP:
+					if (inputLine.length == 1) {
+						printStream.println(EXIT_MSG);
+						return;
+					}
+				case LRU:
+				case NFU:
+				case RANDOM:
+					if (isStarted && inputLine.length == 2 && getPositiveInteger(inputLine[1]) != 0) {
+						MMUDriver.start(inputLine);
+						break;
+					}
+				default: {
+					printStream.println(INVALID_MSG);
+					if (!isStarted)
+						printStream.println(NOT_STARTED_MSG);
+					printHelper();
+				}
+			}
+		}
+	}
+	
+	public void printHelper() {
+		printStream.print("! Supported commands: " + START + " | " + STOP + " (control) or ");
+		printStream.println(LRU + " | " + NFU + " | " + RANDOM + " <integer> (config)");
 	}
 	
 	public void write(String string) {
-		// TODO Implement
 	}
 }
