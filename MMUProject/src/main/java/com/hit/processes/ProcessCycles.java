@@ -4,23 +4,22 @@ import java.util.List;
 
 public class ProcessCycles {
 	
-	private List<ProcessCycle> listOfProcessCycles;
+	private List<ProcessCycle> processCycles;
 	
 	public ProcessCycles(List<ProcessCycle> processCycles) {
-		this.listOfProcessCycles = processCycles;
-		
+		this.processCycles = processCycles;
 	}
 	
 	public List<ProcessCycle> getProcessCycles() {
-		return this.listOfProcessCycles;
+		return this.processCycles;
 	}
 	
 	public void setProcessCycles(List<ProcessCycle> processCycles) {
-		this.listOfProcessCycles = processCycles;
+		this.processCycles = processCycles;
 		
 	}
 	
 	public String toString() {
-		return "ProcessCycles [processCycles=" + listOfProcessCycles + "]";
+		return "ProcessCycles [processCycles=" + processCycles + "]";
 	}
 }

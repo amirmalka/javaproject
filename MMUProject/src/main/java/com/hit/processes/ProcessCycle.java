@@ -5,7 +5,7 @@ public class ProcessCycle {
 	
 	private int sleepMs;
 	private List<Long> pages;
-	private List<byte[]>data;
+	private List<byte[]> data;
 	
 	public ProcessCycle(List<Long> pages, int sleepMs, List<byte[]> data) {
 		this.pages = pages;

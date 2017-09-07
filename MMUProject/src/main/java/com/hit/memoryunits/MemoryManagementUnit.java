@@ -1,5 +1,6 @@
 package com.hit.memoryunits;
 import java.io.IOException;
+import java.util.Map;
 
 import com.hit.algorithm.*;
 
@@ -14,7 +15,7 @@ public class MemoryManagementUnit {
 		this.hd = HardDisk.getInstance();
 	}
 	
-	public Page<byte[]>[] getPages(Long[] pageIds) throws IOException {
+	public synchronized Page<byte[]>[] getPages(Long[] pageIds) throws IOException {
 		@SuppressWarnings("unchecked")
 		Page<byte[]>[] requestedPages = (Page<byte[]>[]) new Page<?>[pageIds.length];
 		
@@ -39,6 +40,19 @@ public class MemoryManagementUnit {
 			requestedPages[i] = ram.getPage(pageIds[i]);			
 		}
 		return requestedPages;
+	}
+	
+	public void shutdown() {
+		int errorCount = 0;
+		for (Map.Entry<Long, Page<byte[]>> pageEntry : ram.getPages().entrySet()) {
+			try {
+				hd.pageReplacement(pageEntry.getValue(), pageEntry.getKey());
+			}
+			catch (IOException e){
+				++errorCount;
+			}
+		}
+		System.out.println("Shutdown of MMU encounterd " + errorCount + " errors");
 	}
 }
 

@@ -24,14 +24,16 @@ public class CLI implements Runnable {
 		this.scanner = new Scanner(in);
 	}
 	
-	private boolean isNumeric(String str) {
+	private static boolean isNumeric(String str) {
 		return str != null && str.chars().allMatch(Character::isDigit);
 	}
 	
-	private int getPositiveInteger(String str) {
+	private static int getPositiveInteger(String str) {
 		if (str != null && isNumeric(str)) {
 			try {
-				return Integer.parseInt(str);
+				int parsedInt = Integer.parseInt(str);
+				if (parsedInt > 0)
+					return parsedInt;
 			}
 			catch (NumberFormatException e) {
 				return 0;

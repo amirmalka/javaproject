@@ -5,21 +5,21 @@ import java.util.List;
 
 public class RunConfiguration {
 	
-	private List<ProcessCycles> listOfProcessCycles;
+	private List<ProcessCycles> processesCycles;
 	
 	public RunConfiguration(List<ProcessCycles> processesCycles) {
-		this.listOfProcessCycles = processesCycles;
+		this.processesCycles = processesCycles;
 	}
 	
 	public List<ProcessCycles> getProcessesCycles() {
-		return this.listOfProcessCycles;
+		return this.processesCycles;
 	}
 	
 	public void setProcessesCycles(List<ProcessCycles> processesCycles) {
-		this.listOfProcessCycles = processesCycles;
+		this.processesCycles = processesCycles;
 	}
 	
 	public String toString() {
-		return "RunConfiguration [processesCycles=" + listOfProcessCycles + "]";
+		return "RunConfiguration [processesCycles=" + processesCycles + "]";
 	}
 }
