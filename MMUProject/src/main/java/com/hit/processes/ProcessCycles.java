@@ -3,23 +3,24 @@ package com.hit.processes;
 import java.util.List;
 
 public class ProcessCycles {
+	
+	private List<ProcessCycle> listOfProcessCycles;
+	
 	public ProcessCycles(List<ProcessCycle> processCycles) {
-		// TODO Implement
+		this.listOfProcessCycles = processCycles;
 		
 	}
 	
 	public List<ProcessCycle> getProcessCycles() {
-		// TODO Implement
-		return null;
+		return this.listOfProcessCycles;
 	}
 	
 	public void setProcessCycles(List<ProcessCycle> processCycles) {
-		// TODO Implement
+		this.listOfProcessCycles = processCycles;
 		
 	}
 	
 	public String toString() {
-		// TODO Implement
-		return "";
+		return "ProcessCycles [processCycles=" + listOfProcessCycles + "]";
 	}
 }

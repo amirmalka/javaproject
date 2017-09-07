@@ -2,42 +2,44 @@ package com.hit.processes;
 import java.util.List;
 
 public class ProcessCycle {
-	public ProcessCycle(List<Long> pages,
-            int sleepMs,
-            List<byte[]> data) {
-		// TODO Implement
+	
+	private int sleepMs;
+	private List<Long> pages;
+	private List<byte[]>data;
+	
+	public ProcessCycle(List<Long> pages, int sleepMs, List<byte[]> data) {
+		this.pages = pages;
+		this.sleepMs = sleepMs;
+		this.data = data;
 	}
 	
 	public List<Long> getPages() {
-		// TODO Implement
-		return null;
+		return this.pages;
 	}
 	
 	public void setPages(List<Long> pages) {
-		// TODO Implement
+		this.pages = pages;
 	}
 	
 	public int getSleepMs() {
-		// TODO Implement
-		return 0;
+		return this.sleepMs;
 	}
 
 	public void setSleepMs(int sleepMs) {
-		// TODO Implement
+		this.sleepMs = sleepMs;
 	}
 	
 	public List<byte[]> getData() {
-		// TODO Implement
-		return null;
+		return data;
 	}
 	
 	public void setData(List<byte[]> data) {
-		// TODO Implement
+		this.data = data;
 	}
 	
 	public String toString() {
-		// TODO Implement
-		return "";
+		
+		return "ProcessCycle [pages=" + pages + ", sleepMs=" + sleepMs + ", data=" + data + "]";
 	}
 
 }
