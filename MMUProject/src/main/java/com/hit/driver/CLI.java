@@ -3,6 +3,9 @@ package com.hit.driver;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class CLI implements Runnable {
@@ -44,7 +47,7 @@ public class CLI implements Runnable {
 	
 	public void run() {
 		boolean isStarted = false;
-		printStream.println(WELCOME_MSG);
+		write(WELCOME_MSG);
 		while (true) {
 			String[] inputLine = this.scanner.nextLine().split("\\s+");
 			
@@ -55,12 +58,12 @@ public class CLI implements Runnable {
 				case START:
 					if (inputLine.length == 1) {
 						isStarted = true;
-						printStream.println(START_MSG);
+						write(START_MSG);
 						break;
 					}
 				case STOP:
 					if (inputLine.length == 1) {
-						printStream.println(EXIT_MSG);
+						write(EXIT_MSG);
 						return;
 					}
 				case LRU:
@@ -71,9 +74,9 @@ public class CLI implements Runnable {
 						break;
 					}
 				default: {
-					printStream.println(INVALID_MSG);
+					write(INVALID_MSG);
 					if (!isStarted)
-						printStream.println(NOT_STARTED_MSG);
+						write(NOT_STARTED_MSG);
 					printHelper();
 				}
 			}
@@ -81,10 +84,11 @@ public class CLI implements Runnable {
 	}
 	
 	public void printHelper() {
-		printStream.print("! Supported commands: " + START + " | " + STOP + " (control) or ");
-		printStream.println(LRU + " | " + NFU + " | " + RANDOM + " <integer> (config)");
+		write("! Supported commands: " + START + " | " + STOP + " (control) or ");
+		write(LRU + " | " + NFU + " | " + RANDOM + " <integer> (config)");
 	}
 	
 	public void write(String string) {
+		this.printStream.println(string);
 	}
 }

@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -18,7 +16,6 @@ import com.hit.algorithm.NFUAlgoCacheImpl;
 import com.hit.algorithm.Random;
 import com.hit.memoryunits.MemoryManagementUnit;
 import com.hit.processes.Process;
-import com.hit.processes.ProcessCycle;
 import com.hit.processes.ProcessCycles;
 import com.hit.processes.RunConfiguration;
 
