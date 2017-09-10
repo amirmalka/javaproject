@@ -15,8 +15,11 @@ public class MemoryManagementUnit {
 		this.hd = HardDisk.getInstance();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public synchronized Page<byte[]>[] getPages(Long[] pageIds) throws IOException {
-		@SuppressWarnings("unchecked")
+		if (pageIds.length > ram.getInitialCapacity())
+			throw new IOException("Amount of requested pages exceeds RAM capacity!");
+		
 		Page<byte[]>[] requestedPages = (Page<byte[]>[]) new Page<?>[pageIds.length];
 		
 		for (int i=0; i<pageIds.length;i++) {
@@ -27,12 +30,16 @@ public class MemoryManagementUnit {
 					Long pageToRemoveFromRamId = cache.putElement(pageIds[i], pageIds[i]);
 					Page<byte[]> pageToRemoveFromRam = ram.getPage(pageToRemoveFromRamId);
 					Page<byte[]> pageRetrievedFromHd = hd.pageReplacement(pageToRemoveFromRam, pageIds[i]);
+					if (pageRetrievedFromHd == null)
+						throw new IOException("Requested page id [" + pageIds[i] + "] is out of HD bounds!");
 					ram.removePage(pageToRemoveFromRam);
 					ram.addPage(pageRetrievedFromHd);
 				}
 				else {
 					// Page Fault
 					Page <byte[]> pageRetrievedFromHd = hd.pageFault(pageIds[i]);
+					if (pageRetrievedFromHd == null)
+						throw new IOException("Requested page id [" + pageIds[i] + "] is out of HD bounds!");
 					cache.putElement(pageIds[i], pageIds[i]);
 					ram.addPage(pageRetrievedFromHd);
 				}
@@ -52,7 +59,8 @@ public class MemoryManagementUnit {
 				++errorCount;
 			}
 		}
-		System.out.println("Shutdown of MMU encounterd " + errorCount + " errors");
+		if (errorCount > 0)
+			System.out.println("Shutdown of MMU encounterd " + errorCount + " errors");
 	}
 }
 

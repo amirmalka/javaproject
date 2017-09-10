@@ -74,7 +74,8 @@ public class MMUDriver {
 		try {
 			RunConfiguration runConfiguration = new Gson().fromJson(new JsonReader(new FileReader(CONFIG_FILE_NAME)), RunConfiguration.class);
 			return runConfiguration;
-			} catch (JsonIOException | JsonSyntaxException | FileNotFoundException e) {
+			} 
+		catch (JsonIOException | JsonSyntaxException | FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		return null;
