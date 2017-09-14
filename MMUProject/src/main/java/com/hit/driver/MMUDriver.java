@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -58,6 +60,13 @@ public class MMUDriver {
         		executor.submit(app);
         }
         executor.shutdown();
+        while (!executor.isTerminated()) {
+        		try {
+					executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+				} catch (InterruptedException e) {
+					System.out.println(e.getMessage());
+				}
+        }
 	}
 	
 	public static List<Process> createProcesses(
