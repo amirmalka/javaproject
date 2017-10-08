@@ -12,7 +12,7 @@ import java.util.logging.Level;
 public class MMULogger {
 	private static MMULogger instance = null;
 	public final static String DEFAULT_FILE_NAME = "logs/log.txt";
-	private 	FileHandler handler;
+	private FileHandler handler;
 	
 	private MMULogger() {
 		try {
@@ -21,7 +21,6 @@ public class MMULogger {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public static MMULogger getInstance() {
@@ -37,7 +36,7 @@ public class MMULogger {
 		
         OnlyMessageFormatter formatter = new OnlyMessageFormatter();
         handler.setFormatter(formatter);
-        handler.publish(new LogRecord(level, command+System.getProperty("line.separator")));   
+        handler.publish(new LogRecord(level, command+System.getProperty("line.separator")));
 	}
 	
 	public class OnlyMessageFormatter extends Formatter 
