@@ -1,8 +1,11 @@
 package com.hit.memoryunits;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.logging.Level;
 
 import com.hit.algorithm.*;
+import com.hit.util.MMULogger;
 
 public class MemoryManagementUnit {
 	 private RAM ram;
@@ -30,6 +33,7 @@ public class MemoryManagementUnit {
 					Long pageToRemoveFromRamId = cache.putElement(pageIds[i], pageIds[i]);
 					Page<byte[]> pageToRemoveFromRam = ram.getPage(pageToRemoveFromRamId);
 					Page<byte[]> pageRetrievedFromHd = hd.pageReplacement(pageToRemoveFromRam, pageIds[i]);
+					MMULogger.getInstance().write("PR:MTH "+ pageToRemoveFromRamId + " MTR " + pageIds[i], Level.INFO);
 					if (pageRetrievedFromHd == null)
 						throw new IOException("Requested page id [" + pageIds[i] + "] is out of HD bounds!");
 					ram.removePage(pageToRemoveFromRam);
@@ -37,6 +41,7 @@ public class MemoryManagementUnit {
 				}
 				else {
 					// Page Fault
+					MMULogger.getInstance().write("PF:" + pageIds[i], Level.INFO);
 					Page <byte[]> pageRetrievedFromHd = hd.pageFault(pageIds[i]);
 					if (pageRetrievedFromHd == null)
 						throw new IOException("Requested page id [" + pageIds[i] + "] is out of HD bounds!");
@@ -44,7 +49,7 @@ public class MemoryManagementUnit {
 					ram.addPage(pageRetrievedFromHd);
 				}
 			}
-			requestedPages[i] = ram.getPage(pageIds[i]);			
+			requestedPages[i] = ram.getPage(pageIds[i]);	
 		}
 		return requestedPages;
 	}
@@ -60,7 +65,7 @@ public class MemoryManagementUnit {
 			}
 		}
 		if (errorCount > 0)
-			System.out.println("Shutdown of MMU encounterd " + errorCount + " errors");
+			MMULogger.getInstance().write("Shutdown of MMU encounterd " + errorCount + " errors", Level.SEVERE);
 	}
 }
 

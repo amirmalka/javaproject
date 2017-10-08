@@ -3,9 +3,12 @@ package com.hit.driver;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Observable;
 import java.util.Scanner;
 
-public class CLI implements Runnable {
+import com.hit.view.View;
+
+public class CLI extends Observable implements Runnable, View {
 	public static final String START = "start";
 	public static final String STOP = "stop";
 	public static final String LRU = "LRU";
@@ -87,5 +90,11 @@ public class CLI implements Runnable {
 	
 	public void write(String string) {
 		this.printStream.println(string);
+	}
+
+	@Override
+	public void start() {
+		// TODO Implement
+		
 	}
 }

@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import java.util.logging.Level;
+
+import com.hit.util.MMULogger;
 
 public class HardDisk {
 	private final int _SIZE = 1000;
@@ -22,7 +25,6 @@ public class HardDisk {
 		}
 		catch (IOException | ClassNotFoundException ex1) {
 			// File was corrupted or file was not exist - Initialize HD data and save to file
-			
 			hd = generateEmptyHdMap(_SIZE);
 			try {
 				ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DEFAULT_FILE_NAME));
@@ -30,7 +32,7 @@ public class HardDisk {
 				out.close();
 			}
 			catch (IOException ex2) {
-				ex2.printStackTrace();
+				MMULogger.getInstance().write(ex2.getMessage(), Level.SEVERE);
 			}
 		}		
 	}

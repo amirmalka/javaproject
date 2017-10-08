@@ -1,6 +1,9 @@
 package com.hit.memoryunits;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+
+import com.hit.util.MMULogger;
 
 public class RAM
 {
@@ -10,6 +13,7 @@ public class RAM
 	public RAM(int initialCapacity) {
 		capacity = initialCapacity;
 		memory = new HashMap<Long, Page<byte[]>>(initialCapacity);
+		MMULogger.getInstance().write("RC:" + initialCapacity, Level.INFO);
 	}
 	
 	public Map<Long,Page<byte[]>> getPages(){
@@ -61,6 +65,7 @@ public class RAM
 	
 	public void setInitialCapacity(int initialCapacity) {
 		this.capacity = initialCapacity;
+		MMULogger.getInstance().write("RC:" + initialCapacity, Level.INFO);
 	}
 	
 	public boolean isFull() {
