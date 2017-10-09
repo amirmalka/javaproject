@@ -1,6 +1,5 @@
 package com.hit.memoryunits;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 
