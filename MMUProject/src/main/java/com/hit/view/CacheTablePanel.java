@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.util.HashMap;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -20,12 +22,17 @@ public class CacheTablePanel extends JPanel {
 	private static final long serialVersionUID = -7316683710217925063L;
 	private MMUView view;
 	private JTable cacheTable;
-	private Integer currentTableCol;
+	private HashMap<Integer, Long> colToPageId; 
+	private HashMap<Long, Integer> pageIdToCol;
+	private Integer currentCol;
 	private JScrollPane scrollPane;
 
 	public CacheTablePanel(MMUView view) {
 		this.view = view;
-		currentTableCol = 0;
+		currentCol = 0;
+		colToPageId = new HashMap<Integer, Long>();
+		pageIdToCol = new HashMap<Long, Integer>(); 
+		
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(400, 200));
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Cache Viewer",
@@ -62,44 +69,26 @@ public class CacheTablePanel extends JPanel {
 		add(scrollPane, BorderLayout.CENTER);
 	}
 
-	public void commandDataToTable(MMUCommand mmuCommand) {
+	public void commandDataToTable(MMUCommand mmuCommand, boolean colVisible) {
 		// update column header with page id
 		JTableHeader tableHeader = cacheTable.getTableHeader();
 		TableColumnModel tcm = tableHeader.getColumnModel();
-		TableColumn tableColumn = tcm.getColumn(currentTableCol);
-		tableColumn.setHeaderValue(mmuCommand.getPageId().toString());
+		int thisPageColumn = pageIdToCol.get(mmuCommand.getPageId()); 
+		TableColumn tableColumn = tcm.getColumn(thisPageColumn);
+		if (colVisible)
+			tableColumn.setHeaderValue(mmuCommand.getPageId().toString());
+		else
+			tableColumn.setHeaderValue(" ");
 		tableHeader.repaint();
 
 		int row = 0;
 		// update page data into the table
 		for (String data : mmuCommand.getData()) {
-			cacheTable.setValueAt(data, row, currentTableCol);
+			if (colVisible)
+				cacheTable.setValueAt(data, row, thisPageColumn);
+			else
+				cacheTable.setValueAt(" ", row, thisPageColumn);
 			row++;
-		}
-
-		if (cacheTable.getColumnCount() - 1 == currentTableCol) {
-			currentTableCol = 0;
-		} else {
-			currentTableCol++;
-		}
-	}
-
-	public void updateTableForUnselectedProcess() {
-		JTableHeader tableHeader = cacheTable.getTableHeader();
-		TableColumnModel tcm = tableHeader.getColumnModel();
-		TableColumn tableColumn = tcm.getColumn(currentTableCol);
-		tableColumn.setHeaderValue("");
-		tableHeader.repaint();
-
-		// update page data into the table
-		for (int row = 0; row < view.getPageSize(); row++) {
-			cacheTable.setValueAt(" ", row, currentTableCol);
-		}
-
-		if (cacheTable.getColumnCount() - 1 == currentTableCol) {
-			currentTableCol = 0;
-		} else {
-			currentTableCol++;
 		}
 	}
 
@@ -109,7 +98,9 @@ public class CacheTablePanel extends JPanel {
 		TableColumnModel tcm = tableHeader.getColumnModel();
 
 		view.setCurrentLogRow(2);
-		currentTableCol = 0;
+		currentCol = 0;
+		colToPageId.clear();
+		pageIdToCol.clear();
 
 		for (int col = 0; col < cacheTable.getColumnCount(); col++) {
 			for (int row = 0; row < cacheTable.getRowCount(); row++) {
@@ -120,6 +111,18 @@ public class CacheTablePanel extends JPanel {
 			tableColumn.setHeaderValue(" ");
 		}
 		tableHeader.repaint();
+	}
+
+	public void handlePageFault(MMUCommand currentCommand) {
+		 colToPageId.put(currentCol, currentCommand.getPageId());
+		 pageIdToCol.put(currentCommand.getPageId(), currentCol);
+		 currentCol++;
+	}
+
+	public void handlePageReplacement(MMUCommand currentCommand) {
+		int columnOfPageToHd = pageIdToCol.get(currentCommand.getMth());
+		colToPageId.put(columnOfPageToHd, currentCommand.getMtr());
+		pageIdToCol.put(currentCommand.getMtr(), columnOfPageToHd);
 	}
 
 }

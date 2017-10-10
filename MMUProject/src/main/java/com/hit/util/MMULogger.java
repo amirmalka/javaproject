@@ -1,11 +1,12 @@
 package com.hit.util;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
-
-
 import java.util.logging.Level;
 
 
@@ -16,9 +17,11 @@ public class MMULogger {
 	
 	private MMULogger() {
 		try {
+			File file = new File(DEFAULT_FILE_NAME);
+			if(file.exists())
+				renameCurrentLog();
 			handler = new FileHandler(DEFAULT_FILE_NAME, false);
 		} catch (SecurityException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -50,5 +53,25 @@ public class MMULogger {
 			return record.getMessage();
 		}
 		
+	}
+	
+	
+	public void rotateLog() {
+		try {
+			handler.close();
+			renameCurrentLog();
+			handler = new FileHandler(DEFAULT_FILE_NAME, false);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void renameCurrentLog() {
+		Date date = new Date() ;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
+		File newFile = new File("logs/"+ dateFormat.format(date) + ".txt") ;
+		File oldFile = new File(DEFAULT_FILE_NAME);
+		oldFile.renameTo(newFile);
 	}
 }

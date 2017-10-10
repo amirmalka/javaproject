@@ -6,7 +6,7 @@ public class Page<T> implements Serializable{
 	
 	private static final long serialVersionUID = 3339336743990959909L;
 	private T content;
-	private 	Long pageID;
+	private Long pageID;
 	
 	
 	public Page(Long id,  T content) {

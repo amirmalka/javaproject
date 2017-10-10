@@ -111,6 +111,7 @@ public class StatsPanel extends JPanel {
 			progressBar.setValue(100);
 		else
 			progressBar.setValue(val);
+		
 	}
 
 }

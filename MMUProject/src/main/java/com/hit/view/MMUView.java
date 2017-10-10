@@ -18,14 +18,13 @@ public class MMUView extends Observable implements View {
 	private ProcessListPanel processListPanel;
 	private ButtonsPanel buttonsPanel;
 	private JFrame frame;
-	
+
 	/* Data */
 	private List<MMUCommand> commands;
 	private int numProcesses;
 	private int ramCapacity;
 	private int pageSize;
-	
-	
+
 	private Integer currentLogRow = 2;
 	private volatile boolean shouldPlayThreadStop = false;
 	private Thread playAllThread;
@@ -34,7 +33,7 @@ public class MMUView extends Observable implements View {
 	public MMUView() {
 
 	}
-	
+
 	@Override
 	public void start() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -97,8 +96,7 @@ public class MMUView extends Observable implements View {
 	public void setSpeed(int speed) {
 		playAllSpeedMillis = speed;
 	}
-	
-	
+
 	public Integer getCurrentLogRow() {
 		return currentLogRow;
 	}
@@ -166,27 +164,31 @@ public class MMUView extends Observable implements View {
 		if (currentLogRow < commands.size()) {
 			MMUCommand currentCommand = commands.get(currentLogRow);
 
-			Double precentageOfProgress = new Double((double) (currentLogRow - 1) / (double) (commands.size() - 2) * 100);
-			statsPanel.updateProgressBar(precentageOfProgress.intValue());
-
+			// if last log row update to 100%
+			if (currentLogRow + 1 == commands.size())
+				statsPanel.updateProgressBar(100);
+			else {
+				Double precentageOfProgress = new Double(
+						(double) (currentLogRow - 1) / (double) (commands.size() - 2) * 100);
+				statsPanel.updateProgressBar(precentageOfProgress.intValue());
+			}
+			
 			++currentLogRow;
 
 			switch (currentCommand.getType()) {
 			case MMUCommand.TYPE_GET_PAGES:
-				if (processListPanel.isProcessSelected(currentCommand.getProcessId()))
-					cacheTablePanel.commandDataToTable(currentCommand);
-				else {
-					cacheTablePanel.updateTableForUnselectedProcess();
-				}
+				cacheTablePanel.commandDataToTable(currentCommand,
+						processListPanel.isProcessSelected(currentCommand.getProcessId()));
 				break;
 
 			case MMUCommand.TYPE_PAGE_FAULT:
 				statsPanel.incrementPageFaults();
+				cacheTablePanel.handlePageFault(currentCommand);
 				break;
 
 			case MMUCommand.TYPE_PAGE_REPLACEMENT:
 				statsPanel.incrementPageReplacements();
-				
+				cacheTablePanel.handlePageReplacement(currentCommand);
 				break;
 			}
 		}
@@ -202,13 +204,13 @@ public class MMUView extends Observable implements View {
 		playAllThread = new Thread(c);
 		playAllThread.start();
 	}
-	
+
 	public void reset() {
 		// Stop 'Play All' thread
 		while (playAllThread != null && playAllThread.isAlive())
 			shouldPlayThreadStop = true;
 		shouldPlayThreadStop = false;
-		
+
 		cacheTablePanel.resetTable();
 		statsPanel.resetStats();
 		buttonsPanel.enablePlayButtons();
@@ -225,7 +227,7 @@ public class MMUView extends Observable implements View {
 	public static Font getDefaultFontBold() {
 		return new Font("Arial", Font.BOLD, 15);
 	}
-	
+
 	/* Nested Class to simulate "Play" clicks with interval */
 	public class ClickSimulator implements Runnable {
 		public ClickSimulator() {

@@ -38,6 +38,7 @@ public class MMUModel extends Observable implements Model{
 	public IAlgoCache<Long,Long> algo; 	 	
 	private MemoryManagementUnit mmu;
 	private static final String CONFIG_FILE_NAME = "./src/main/resources/com/hit/config/Configuration.json";
+
 	
 	public MMUModel() {
 		
@@ -76,6 +77,8 @@ public class MMUModel extends Observable implements Model{
 		readAndGetCommands(MMULogger.DEFAULT_FILE_NAME);
 		setChanged();
 		notifyObservers(commands);
+		MMULogger.getInstance().rotateLog();
+		
 		mmu.shutdown();
 	}
 	
