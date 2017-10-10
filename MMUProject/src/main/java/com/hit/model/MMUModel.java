@@ -47,12 +47,6 @@ public class MMUModel extends Observable implements Model{
 		// TODO: Implement
 	}
 	
-	//public void reverseString(String arg) {
-	// setChanged();
-    //		notifyObservers(new StringBuilder(arg).reverse().toString());		
-	//}
-	
-
 	@Override
 	public void start(String[] command) {
 		IAlgoCache<Long, Long> algo = null;

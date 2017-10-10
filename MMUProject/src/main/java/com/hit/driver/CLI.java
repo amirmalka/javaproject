@@ -62,6 +62,8 @@ public class CLI extends Observable implements Runnable, View {
 			case STOP:
 				if (inputLine.length == 1) {
 					write(EXIT_MSG);
+					setChanged();
+					notifyObservers(STOP);
 					return;
 				}
 			case LRU:
@@ -70,7 +72,6 @@ public class CLI extends Observable implements Runnable, View {
 				if (isStarted && inputLine.length == 2 && getPositiveInteger(inputLine[1]) != 0) {
 					setChanged();
 					notifyObservers(inputLine);
-					// MMUDriver.start(inputLine);
 					break;
 				}
 			default: {
