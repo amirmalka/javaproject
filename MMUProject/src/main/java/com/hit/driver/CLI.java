@@ -72,6 +72,7 @@ public class CLI extends Observable implements Runnable, View {
 				if (isStarted && inputLine.length == 2 && getPositiveInteger(inputLine[1]) != 0) {
 					setChanged();
 					notifyObservers(inputLine);
+					isStarted = false;
 					break;
 				}
 			default: {
